@@ -12,11 +12,22 @@
     }
 
     var start_time = 0;
-    var total = 0;
+    var score = 0;
+    var challenges = 0;
+    var iteration = 0;
 
-    function start()
+    function start(difficulty)
     {
-        total = 0;
+        score = 0;
+        if (difficulty == "easy")
+            challenges = [3,3,3,4,4,4,4,5,5,6];
+        else if (difficulty == "normal")
+            challenges = [3,3,4,4,4,4,4,4,5,5,5,5,6];
+        else if (difficulty == "hard")
+            challenges = [3,4,4,4,4,4,4,5,5,5,5,6,6,6,7,7];
+        else //if (difficulty == "insane")
+            challenges = [3,3,3,4,4,4,4,4,4,5,5,5,5,5,6,6,6,6,7,7,7,7];
+        shuffle(challenges)
         start_time = new Date().getTime();
         generate_monster()
         var countdown = setInterval(function() {
@@ -51,24 +62,32 @@
     
     function generate_monster()
     {
-        total++;
+        score++;
         shuffle(images);
         document.write('<div id="timer">05:00:00</div>');
         document.write('<button onclick="start()">Reset</button><br>');
-        var n = Math.round(Math.random() * 4 + 3);
+        var n = challenges[iteration];
         var slice = images.slice(0, n);
+        document.write('<div>');
         for (var i = 0; i < n; i++)
         {
             document.write('<img src="'+slice[i]+'" width=100 height=100>');
         }
+        document.write('</div>');
         document.write('<br><button onclick="generate_monster()">Next</button>');
-        document.write('<br>Score: ' + (total > 1 ? total - 1 : 0));
+        document.write('<br>Score: ' + (score > 1 ? score - 1 : 0));
         document.close();
+        iteration++;
+        if (iteration > challenges.length)
+            alert("You won!");
     }
 </script>
 </head>
 
 <body>
         <div id="timer">05:00:00</div><br>
-        <button onclick="start()">Start</button>
+        <button onclick="start('easy')">Easy</button>
+        <button onclick="start('normal')">Normal</button>
+        <button onclick="start('hard')">Hard</button>
+        <button onclick="start('insane')">Insane</button>
 </body>
