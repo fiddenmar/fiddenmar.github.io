@@ -12,14 +12,21 @@
     }
 
     var start_time = 0;
+    var total = 0;
 
     function start()
     {
+        total = 0;
         start_time = new Date().getTime();
         generate_monster()
         var countdown = setInterval(function() {
             var now = new Date().getTime();
-            var time_passed = 5 * 1000 * 60 + start_time - now;
+            var time_passed =  5 * 1000 * 60 + start_time - now;
+            if (time_passed < 0) {
+                clearInterval(countdown);
+                alert("Time is over");
+                return;
+            }
             var minutes = Math.floor((time_passed % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((time_passed % (1000 * 60)) / 1000);
             var mseconds = Math.floor((time_passed % (1000)) / 10);
@@ -33,22 +40,35 @@
             return "0" + d;
         return d;
     }
+
+    function shuffle(array)
+    {
+        for (let i = array.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
     
     function generate_monster()
     {
-        document.write('<div id="timer"></div>');
-        var n = Math.round(Math.random() * 3 + 3);
+        total++;
+        shuffle(images);
+        document.write('<div id="timer">05:00:00</div>');
+        document.write('<button onclick="start()">Reset</button><br>');
+        var n = Math.round(Math.random() * 4 + 3);
+        var slice = images.slice(0, n);
         for (var i = 0; i < n; i++)
         {
-            var image_num = Math.round(Math.random()*(p-1));
-            document.write('<img src="'+images[image_num]+'" width=100 height=100>');
+            document.write('<img src="'+slice[i]+'" width=100 height=100>');
         }
         document.write('<br><button onclick="generate_monster()">Next</button>');
+        document.write('<br>Score: ' + (total > 1 ? total - 1 : 0));
         document.close();
     }
 </script>
 </head>
 
 <body>
-    <button onclick="start()">Start</button>
+        <div id="timer">05:00:00</div><br>
+        <button onclick="start()">Start</button>
 </body>
