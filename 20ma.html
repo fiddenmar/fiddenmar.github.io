@@ -1,0 +1,54 @@
+<head>
+<script>
+    var images = ["img/daggers.png", "img/daggers_1.png", "img/daggers_2.png", "img/daggers_3.png", "img/daggers_4.png", "img/daggers_5.png", "img/pointy_sword.png", "img/pointy_sword_1.png", "img/pointy_sword_2.png", "img/pointy_sword_3.png", "img/pointy_sword_4.png", "img/pointy_sword_5.png", "img/spell_book.png", "img/spell_book_1.png", "img/spell_book_2.png", "img/spell_book_3.png", "img/spell_book_4.png", "img/spell_book_5.png", "img/supersonic_arrow.png", "img/supersonic_arrow_1.png", "img/supersonic_arrow_2.png", "img/supersonic_arrow_3.png", "img/supersonic_arrow_4.png", "img/supersonic_arrow_5.png", "img/wolf_head.png", "img/wolf_head_1.png", "img/wolf_head_2.png", "img/wolf_head_3.png", "img/wolf_head_4.png", "img/wolf_head_5.png"];
+
+    var j = 0
+    var p = images.length;
+    var preBuffer = new Array()
+    for (i = 0; i < p; i++)
+    {
+       preBuffer[i] = new Image()
+       preBuffer[i].src = images[i]
+    }
+
+    var start_time = 0;
+
+    function start()
+    {
+        start_time = new Date().getTime();
+        generate_monster()
+        var countdown = setInterval(function() {
+            var now = new Date().getTime();
+            var time_passed = 5 * 1000 * 60 + start_time - now;
+            var minutes = Math.floor((time_passed % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((time_passed % (1000 * 60)) / 1000);
+            var mseconds = Math.floor((time_passed % (1000)) / 10);
+            document.getElementById("timer").innerHTML = format_digit(minutes) + ":" + format_digit(seconds) + ":" + format_digit(mseconds);
+        }, 10);
+    }
+
+    function format_digit(d)
+    {
+        if (d < 10)
+            return "0" + d;
+        return d;
+    }
+    
+    function generate_monster()
+    {
+        document.write('<div id="timer"></div>');
+        var n = Math.round(Math.random() * 3 + 3);
+        for (var i = 0; i < n; i++)
+        {
+            var image_num = Math.round(Math.random()*(p-1));
+            document.write('<img src="'+images[image_num]+'" width=100 height=100>');
+        }
+        document.write('<br><button onclick="generate_monster()">Next</button>');
+        document.close();
+    }
+</script>
+</head>
+
+<body>
+    <button onclick="start()">Start</button>
+</body>
